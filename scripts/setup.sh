@@ -68,7 +68,7 @@ function setup_go(){
 
 function main(){
   rm -rf ${TEMP_DIR}
-  setup_go
+  #setup_go
   setup_nebula_importer
   setup_nebula_k6
   rm -rf ${TEMP_DIR}

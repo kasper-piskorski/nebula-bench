@@ -13,9 +13,7 @@ shopt -s expand_aliases
 }
 
 # Directory of this script
-SCRIPT_DIR=$(dirname $(readlink -f "$0"))
-# Directory of this project
-PROJECT_DIR=$(dirname ${SCRIPT_DIR})
+PROJECT_DIR=$(dirname $(readlink -f "$0"))
 # target data
 DATA_DIR=${PROJECT_DIR}/target/data
 

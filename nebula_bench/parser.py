@@ -71,6 +71,7 @@ class Edge(Base):
 class Parser(object):
     except_csv_file = ["person_email_emailaddress.csv", "person_speaks_language.csv"]
     delimiter = "|"
+    id_postfix = "Id"
 
     def __init__(self, dump_class, data_path):
         self.data_path = data_path
@@ -168,18 +169,24 @@ class Parser(object):
         )
 
         flag = True
+
+        # remove numbers, eg. Person1Id Person2Id
+        import re
+        pattern = r'[0-9]'
+        header_list = [re.sub(pattern, '', h) for h in header_list]
+        # Match all digits in the string and replace them with an empty string
+        print(f"Edge: {file_name} src_vertex: {src_vertex} dst_vertex: {dst_vertex} header: {header_list}")
         for index, h in enumerate(header_list):
-            if h.lower() == src_vertex.lower() + ".id" and flag:
+            if h.lower() == src_vertex.lower() + self.id_postfix and flag:
                 # if the src and dst are same vertex, first is src and second is dst
                 flag = not flag
-                name = h.rsplit(".id", 1)[0].lower()
+                name = h.rsplit(self.id_postfix, 1)[0].lower()
                 edge.src_name, edge.src_index = name, index
                 edge.src_prefix = prefix_map.get(name, "")
-            elif h.lower() == dst_vertex.lower() + ".id":
-                name = h.rsplit(".id", 1)[0].lower()
+            elif h.lower() == dst_vertex.lower() + self.id_postfix:
+                name = h.rsplit(self.id_postfix, 1)[0].lower()
                 edge.dst_name, edge.dst_index = name, index
                 edge.dst_prefix = prefix_map.get(name, "")
-
             else:
                 p = Prop()
                 p.name = h
